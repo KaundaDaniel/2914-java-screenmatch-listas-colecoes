@@ -5,6 +5,7 @@ import br.com.alura.screenmatch.modelos.Serie;
 import br.com.alura.screenmatch.modelos.Titulo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PrincipalFilmes {
     public static void main(String[] args) {
@@ -38,7 +39,7 @@ public class PrincipalFilmes {
         System.out.println("Filme 1: " + filme1.getNome());
         System.out.println("Diretor: " + filme1.getDiretor());
         //Criando o ArrayList de titulos
-        ArrayList<Titulo> titulos= new ArrayList<>();
+        List<Titulo> titulos= new ArrayList<>();
         titulos.add(filme1);
         titulos.add(filme2);
         titulos.add(lost);
