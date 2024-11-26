@@ -5,6 +5,8 @@ import br.com.alura.screenmatch.modelos.Serie;
 import br.com.alura.screenmatch.modelos.Titulo;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class PrincipalFilmes {
@@ -18,7 +20,7 @@ public class PrincipalFilmes {
         Filme filme2 = new Filme("A procura da verdade", 2016);
         filme2.setNome("A procura da verdade");
         filme2.setDiretor("Robert Downey Jr.");
-        filme2.setDuracaoEmMinutos(135);
+        filme2.setDuracaoEmMinutos(1080);
         filme2.avalia(7);
 
         Serie lost = new Serie("Lost", 2000);
@@ -54,6 +56,19 @@ public class PrincipalFilmes {
              }
 
         }
+        List<String>actores=new ArrayList<String>();
+        actores.add("Robert Downey Jr.");
+        actores.add("Nicolas Cage");
+        actores.add("Luciano Lucas");
+        Collections.sort(actores);
+        System.out.println("Atores:" +actores);
+        titulos.sort(Comparator.comparing(Titulo::getDuracaoEmMinutos));
+        System.out.println("Títulos ordenados por duração:" + titulos) ;
+
+
+        Collections.sort(titulos);
+        System.out.println("Títulos ordenados por nome:" + titulos) ;
+
 
     }
 }
