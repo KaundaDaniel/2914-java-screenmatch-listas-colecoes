@@ -11,44 +11,62 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class PrincipalBusca {
     public static void main(String[] args) throws IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Digite o título do filme:");
-        String titulo = scanner.nextLine();
+        String titulo="";
+        List<Titulo> titulos = new ArrayList<Titulo>();
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .setPrettyPrinting()
+                .create();
+
+         while (!titulo.equalsIgnoreCase("sair")){
+             System.out.println("Digite o título do filme:");
+             titulo = scanner.nextLine();
+             if (titulo.equalsIgnoreCase("sair")) break;
+
+             try {
+
+                 HttpClient client = HttpClient.newHttpClient();
+                 HttpRequest request = HttpRequest.newBuilder()
+                         .uri(URI.create("https://www.omdbapi.com/?t="+titulo.replace(" ", "+")+"&apikey=4cb11c13"))
+                         .build();
+
+                 HttpResponse<String> response = client
+                         .send(request, HttpResponse.BodyHandlers.ofString());
+                 //System.out.println(response.body());
 
 
-        try {
+
+                 TituloDTO tituloDTO= gson.fromJson(response.body(), TituloDTO.class);
+                 Titulo titulo1 = new Titulo(tituloDTO);
+                 titulos.add(titulo1);
 
 
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://www.omdbapi.com/?t="+titulo.replace(" ", "+")+"&apikey=4cb11c13"))
-                    .build();
+                // System.out.println("Meu titulo convertido: "+titulo1);
+             } catch ( NumberFormatException e) {
+                 System.out.println("Aconteceu um erro: "+e.getMessage());
+             }catch ( IllegalArgumentException e){
+                 System.out.println("Aconteceu um erro: "+e.getMessage());
+             } catch (ErroDeConversaoAno e) {
+                 System.out.println(e.getMensagem());;
+             }
 
-            HttpResponse<String> response = client
-                    .send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
-            Gson gson = new GsonBuilder()
-                    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                    .create();
+         }
+        System.out.println(titulos);
+
+                 FileWriter escrita= new FileWriter("filme.json");
+                 escrita.write(gson.toJson(titulos));
+                 escrita.close();
 
 
-            TituloDTO tituloDTO= gson.fromJson(response.body(), TituloDTO.class);
-            Titulo titulo1 = new Titulo(tituloDTO);
-            FileWriter escrita= new FileWriter("filme.txt");
-            escrita.write(titulo1.toString());
-            escrita.close();
-            System.out.println("Meu titulo convertido: "+titulo1);
-        } catch ( NumberFormatException e) {
-            System.out.println("Aconteceu um erro: "+e.getMessage());
-        }catch ( IllegalArgumentException e){
-            System.out.println("Aconteceu um erro: "+e.getMessage());
-        } catch (ErroDeConversaoAno e) {
-            System.out.println(e.getMensagem());;
-        }
+
+
         // System.out.println(tituloDTO);
 
 

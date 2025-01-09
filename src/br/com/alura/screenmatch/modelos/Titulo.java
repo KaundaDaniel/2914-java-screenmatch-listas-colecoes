@@ -23,7 +23,7 @@ public class Titulo  implements Comparable<Titulo>{
             throw new ErroDeConversaoAno("Não consegui converter o ano");
         }
         this.anoDeLancamento = Integer.valueOf(tituloDTO.year());
-        this.duracaoEmMinutos = Integer.valueOf(tituloDTO.runtime().substring(0,2));
+        this.duracaoEmMinutos = Integer.valueOf(tituloDTO.runtime().substring(0,3));
     }
 
 
@@ -84,7 +84,7 @@ public class Titulo  implements Comparable<Titulo>{
 
     @Override
     public String toString() {
-        return "Titulo: " +getNome()
+        return " Titulo: " +getNome()
                 +"\n" + "Ano de Lançamento: "
                 + getAnoDeLancamento() +"\n" + "Duração: " + getDuracaoEmMinutos() +"\n";
     }
